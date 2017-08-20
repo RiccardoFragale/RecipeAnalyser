@@ -1,54 +1,95 @@
 <!doctype html>
-<html>
+<html ng-app="recipeApp">
 
 <head>
-    <!-- Latest compiled and minified CSS -->
+    <title>Recipe Analyzer</title>
+
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js"
+            integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+            crossorigin="anonymous"></script>
+
+    <!-- Bootstrap -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
-
-    <!-- Optional theme -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
-
-    <!-- Latest compiled and minified JavaScript -->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+
+    <!-- Angular -->
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.5/angular.min.js"></script>
+
+
 </head>
 
 <body class="container">
-    <h1>Recipe Analyzer</h1>
+    <div ng-controller="RecipeCtrl">
 
-    <div class="row">
-        <div class="col-md-3">
-            <select id="ingredientSelect" class="form-control" onchange="ShowSelected(this)">
-                <option value="whiteFlour">White flour</option>
-                <option value="erythritol">Erythritol</option>
-                <option value="egg">Eggs</option>
-                <option value="milk">Milk</option>
-                <option value="mascarpone">Mascarpone</option>
-                <option value="activeYeast">Active yeast</option>
-                <option value="bakingPowder">Baking powder</option>
-                <option value="butter">Butter</option>
-            </select>
+        <h1>Recipe Analyzer</h1>
+
+        <div class="row">
+            <div class="col-md-3 form-group">
+                <select id="ingredientSelect" class="form-control" ng-model="ingredientSelect" ng-options="ingredient.value for ingredient in ingredients track by ingredient.key"></select>
+            </div>
+            <div class="col-md-3">
+                <input type="button" class="btn btn-primary" value="Add Ingredient" ng-click="addIngredient()" />
+            </div>
         </div>
-    </div>
-    <div class="row">
-        <div class="col-md-3 form-group">
-            <input id="displayBox" class="form-control" type="text" />
+        <div class="row" ng-repeat="ingredient in recipeIngredients">
+            <div class="col-md-3">
+                <label>{{ingredient.value}}</label>
+            </div>
         </div>
-    </div>
+        <div class="row">
+            <div class="col-md-3 form-group">
+                <input id="carbTotalBox" class="form-control" type="text" ng-model="carboTotal" />
+            </div>
+        </div>
+
+    </div> <!--end RecipeCtrl-->
 
 </body>
 
 </html>
 
-<script src="https://code.jquery.com/jquery-3.2.1.min.js"
-        integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
-        crossorigin="anonymous"></script>
 
-<script>
+<script type="text/javascript">
 
-    function ShowSelected() {
-        var selectBoxValue = $("#ingredientSelect").val();
-        $("#displayBox").val(selectBoxValue);
+    var app = angular.module('recipeApp', []);
+    app.controller('RecipeCtrl', RecipeCtrl);
+
+    function RecipeCtrl($scope) {
+        $scope.carboTotal = 0;
+
+        $scope.addIngredient = function () {
+            $scope.recipeIngredients = $scope.recipeIngredients || [];
+
+            var selectedItemKey = $scope.ingredientSelect.key;
+            var filteredElements = $scope.recipeIngredients.filter(function (item) {
+                return item.key === selectedItemKey;
+            });
+
+            var isElementPresent = filteredElements.length > 0;
+            var isElementNotDefault = $scope.ingredientSelect.key === "default";
+            
+
+            if (!isElementPresent && !isElementNotDefault) {
+                $scope.recipeIngredients.push($scope.ingredientSelect);
+            }
+        }
+
+        $scope.ingredients = [
+            { key: "default", value: "Please select an ingredient..." },
+            { key: "whiteFlour", value: "White flour" },
+            { key: "erythritol", value: "Erythritol" },
+            { key: "egg", value: "Eggs" },
+            { key: "milk", value: "Milk" },
+            { key: "mascarpone", value: "Mascarpone" },
+            { key: "activeYeast", value: "Active yeast" },
+            { key: "bakingPowder", value: "Baking powder" },
+            { key: "butter", value: "Butter" },
+            { key: "oatsFlour", value: "Oatmeal flour" }];
+
+        $scope.ingredientSelect = { key: "default", value: "Please select an ingredient..." };
     }
 
-</script>
 
+</script>
