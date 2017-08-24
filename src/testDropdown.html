@@ -21,25 +21,31 @@
 </head>
 
 <body class="container">
+
+    <h1>Recipe Analyzer</h1>
+
     <div ng-controller="RecipeCtrl">
-
-        <h1>Recipe Analyzer</h1>
-
-        <div class="row">
+        <div class="row form-group">
             <div class="col-md-3 form-group">
                 <select id="ingredientSelect" class="form-control" ng-model="ingredientSelect" ng-options="ingredient.value for ingredient in ingredients track by ingredient.key"></select>
             </div>
-            <div class="col-md-3">
+            <div class="col-md-3 form-group">
                 <input type="button" class="btn btn-primary" value="Add Ingredient" ng-click="addIngredient()" />
             </div>
         </div>
         <div class="row" ng-repeat="ingredient in recipeIngredients">
-            <div class="col-md-3">
+            <div class="col-md-2">
                 <label>{{ingredient.value}}</label>
             </div>
+            <div class="col-md-2">
+                <span class="info">Carbs:</span>
+                <span>{{ingredient.carbs.total}}</span>
+            </div>
+            <hr/>
         </div>
         <div class="row">
             <div class="col-md-3 form-group">
+                <label>Total carbs:</label>
                 <input id="carbTotalBox" class="form-control" type="text" ng-model="carboTotal" />
             </div>
         </div>
@@ -69,27 +75,40 @@
 
             var isElementPresent = filteredElements.length > 0;
             var isElementNotDefault = $scope.ingredientSelect.key === "default";
-            
+
 
             if (!isElementPresent && !isElementNotDefault) {
                 $scope.recipeIngredients.push($scope.ingredientSelect);
+                $scope.carboTotal = SumArrayProperty($scope.recipeIngredients, 'carbs', 'sugars');
             }
         }
 
         $scope.ingredients = [
             { key: "default", value: "Please select an ingredient..." },
-            { key: "whiteFlour", value: "White flour" },
-            { key: "erythritol", value: "Erythritol" },
-            { key: "egg", value: "Eggs" },
-            { key: "milk", value: "Milk" },
-            { key: "mascarpone", value: "Mascarpone" },
-            { key: "activeYeast", value: "Active yeast" },
-            { key: "bakingPowder", value: "Baking powder" },
-            { key: "butter", value: "Butter" },
-            { key: "oatsFlour", value: "Oatmeal flour" }];
+            { key: "whiteFlour", value: "White flour", carbs: { total: 71.2, sugars: 1.8 }, fats: { total: 2.2, saturates: 1.4 }, fibre: 2.9, protein: 10.5, salt: 0 },
+            { key: "erythritol", value: "Erythritol", carbs: { total: 0, sugars: 0 }, fats: { total: 0, saturates: 0 }, fibre: 0, protein: 0, salt: 0 },
+            { key: "egg", value: "Eggs", fats: { total: 9.6, saturates: 2.7 }, carbs: { total: 0.25, sugars: 0.25 }, protein: 14.1, fibre: 0.25, salt: 0.38 },
+            { key: "milk", value: "Milk", fats: { total: 3.6, saturates: 2.3}, carbs: { total: 4.6, sugars: 4.6 }, protein: 3.4, fibre: 0.25, salt: 0.11 },
+            { key: "mascarpone", value: "Mascarpone", fats: { total: 42, saturates: 30.4 }, carbs: { total: 4.9, sugars: 4.6 }, protein: 3.6, fibre: 0, salt: 0.13 },
+            { key: "activeYeast", value: "Active yeast", fats: { total: 3.8, saturates: 1.3 }, carbs: { total: 16.9, sugars: 0.25 }, protein: 44.5, fibre: 19.2, salt: 0.35 },
+            { key: "bakingPowder", value: "Baking powder", fats: { total: 0, saturates: 0 }, carbs: { total: 28, sugars: 0 }, protein: 0, fibre: 0.2, salt: 0 },
+            { key: "butter", value: "Butter", fats: { total: 2.2, saturates: 1.4 }, carbs: { total: 71.2, sugars: 1.8 }, protein: 10.5, fibre: 2.9, salt: 0.1 },
+            { key: "oatsFlour", value: "Oatmeal flour", fats: { total: 8.4, saturates: 1.3 }, carbs: { total: 56.1, sugars: 1 }, protein: 12.1, fibre: 9.1, salt: 0 }];
 
         $scope.ingredientSelect = { key: "default", value: "Please select an ingredient..." };
     }
 
+    function SumArrayProperty(items, prop, subprop) {
+        var result = items.reduce(function (a, b) {
+            var propElement = b[prop];
+            var subPropElement = propElement[subprop];
+            var adder = subPropElement;
+            var result = a + adder;
+
+            return result;
+        }, 0);
+
+        return result;
+    };
 
 </script>
