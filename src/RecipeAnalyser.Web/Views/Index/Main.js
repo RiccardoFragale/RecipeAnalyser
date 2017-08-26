@@ -1,7 +1,9 @@
 
 var app = angular.module('recipeApp', []);
 
+
 app.controller('RecipeCtrl', RecipeCtrl);
+app.controller('IngredientCtrl', IngredientCtrl);
 
 app.directive('dirEnter', function () {
     return function (scope, element, attrs) {
@@ -29,11 +31,6 @@ function RecipeCtrl($scope) {
         AddIngredient($scope);
     }
 
-    $scope.calculateQuantity = function () {
-        $scope.recipeIngredients.forEach(CalculateQuantities(this, $scope));
-    }
-
-
     $scope.ingredients = [
         { key: "default", value: "Please select an ingredient..." },
         { key: "whiteFlour", value: "White flour", carbs: { total: 71.2, sugars: 1.8 }, fats: { total: 2.2, saturated: 1.4 }, fibre: 2.9, proteins: 10.5, salt: 0 },
@@ -49,26 +46,38 @@ function RecipeCtrl($scope) {
     $scope.ingredientSelect = { key: "default", value: "Please select an ingredient..." };
 }
 
+function IngredientCtrl($scope) {
+
+}
+
 
 //functions
 
-function CalculateQuantities(item, scope) {
-    //item.
+function CalculateAmount(scope) {
+    var elementKey = scope.key;
+
+    var element = SingleOrDefaultElementByKey(scope.recipeIngredients, elementKey);
 }
 
-function AddIngredient(scope) {
-    scope.recipeIngredients = scope.recipeIngredients || [];
-
-    var selectedItemKey = scope.ingredientSelect.key;
-    var filteredElements = scope.recipeIngredients.filter(function (item) {
-        return item.key === selectedItemKey;
+function SingleOrDefaultElementByKey(elements, key) {
+    var filteredElements = elements.filter(function (item) {
+        return item.key === key;
     });
 
     if (filteredElements.length > 1) {
         throw "Duplicates keys are not allowed in the ingredientSelect array!";
     }
 
-    var isElementPresent = filteredElements.length > 0;
+    return filteredElements.first;
+}
+
+function AddIngredient(scope) {
+    scope.recipeIngredients = scope.recipeIngredients || [];
+    var selectedItemKey = scope.ingredientSelect.key;
+
+    var filteredElement = SingleOrDefaultElementByKey(scope.recipeIngredients, selectedItemKey);
+
+    var isElementPresent = filteredElement;
     var isElementNotDefault = scope.ingredientSelect.key === "default";
 
 
