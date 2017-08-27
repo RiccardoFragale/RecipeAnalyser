@@ -55,25 +55,25 @@
                                 </div>
                                 <div class="col-md-2">
                                     <span class="info">Qty:</span>
-                                    <input class="form-control" ng-model="ingredient.quantity" dir-enter="calculateQuantity()" />
+                                    <input class="form-control" ng-model="ingredient.quantity" dir-enter="calculateAmount(ingredient)" />
                                 </div>
                                 <div class="col-md-7">
                                     <div class="row">
                                         <div class="col-md-3">
                                             <span class="text-info">Fats:</span>
-                                            <p>{{ingredient.fats.total}}</p>
+                                            <p>{{ingredient.fats.total | number:2}}</p>
                                         </div>
                                         <div class="col-md-3">
                                             <span class="text-info">Carbs:</span>
-                                            <p>{{ingredient.carbs.total}}</p>
+                                            <p>{{ingredient.carbs.total | number:2}}</p>
                                         </div>
                                         <div class="col-md-3">
                                             <span class="text-info">Proteins:</span>
-                                            <p>{{ingredient.proteins}}</p>
+                                            <p>{{ingredient.proteins | number:2}}</p>
                                         </div>
                                         <div class="col-md-3">
                                             <span class="text-info">Fibre:</span>
-                                            <p>{{ingredient.fibre}}</p>
+                                            <p>{{ingredient.fibre | number:2}}</p>
                                         </div>
                                     </div>
                                 </div>
