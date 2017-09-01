@@ -1,7 +1,22 @@
 
 var app = angular.module('recipeApp', []);
 
-app.factory('ingredientsSvc', [function () {
+
+app.directive('dirEnter', function () {
+    return function (scope, element, attrs) {
+        element.bind("keydown keypress", function (event) {
+            if (event.which === 13) {
+                scope.$apply(function () {
+                    scope.$eval(attrs.dirEnter, { 'event': event });
+                });
+
+                event.preventDefault();
+            }
+        });
+    };
+});
+
+app.service('ingredientsSvc', function () {
     return [
         { key: "default", value: "Please select an ingredient..." },
         { key: "whiteFlour", value: "White flour", carbs: { total: 71.2, sugars: 1.8 }, fats: { total: 2.2, saturated: 1.4 }, fibre: 2.9, proteins: 10.5, salt: 0 },
@@ -15,7 +30,7 @@ app.factory('ingredientsSvc', [function () {
         { key: "oatsFlour", value: "Oatmeal flour", fats: { total: 8.4, saturated: 1.3 }, carbs: { total: 56.1, sugars: 1 }, proteins: 12.1, fibre: 9.1, salt: 0 },
         { key: "speltFlour", value: "Spelt flour", fats: { total: 2.5, saturated: 0.4 }, carbs: { total: 63.6, sugars: 1.3 }, proteins: 13.3, fibre: 8.5, salt: 0.03 }
     ];
-}]);
+});
 
 app.service('recipeTotalsSvc', function () {
     var recipeTotals = {
@@ -40,147 +55,6 @@ app.service('recipeTotalsSvc', function () {
         recipeTotals = value;
     }
 });
-
-app.controller('RecipeCtrl', RecipeCtrl);
-app.controller('IngredientCtrl', IngredientCtrl);
-
-app.directive('dirEnter', function () {
-    return function (scope, element, attrs) {
-        element.bind("keydown keypress", function (event) {
-            if (event.which === 13) {
-                scope.$apply(function () {
-                    scope.$eval(attrs.dirEnter, { 'event': event });
-                });
-
-                event.preventDefault();
-            }
-        });
-    };
-});
-
-function RecipeCtrl($scope, ingredientsSvc, recipeTotalsSvc) {
-
-    $scope.$watch(function () { return recipeTotalsSvc.get(); }, function (newValue, oldValue) {
-        if (newValue !== oldValue) $scope.recipeTotals = newValue;
-    });
-
-    $scope.addIngredient = function () {
-        AddIngredient($scope);
-    }
-
-    $scope.ingredients = ingredientsSvc;
-
-    $scope.ingredientSelect = { key: "default", value: "Please select an ingredient..." };
-}
-
-function IngredientCtrl($scope, recipeTotalsSvc) {
-
-    $scope.calculateAmount = function (ingredient) {
-        var ingredients = $scope.ingredients;
-        CalculateAmounts(ingredients, ingredient);
-        UpdateTotals($scope, recipeTotalsSvc);
-    };
-
-    $scope.quantity = 0;
-}
-
-
-//functions
-
-function CalculateAmounts(ingredients, currentIngredient) {
-    var elementKey = currentIngredient.key;
-
-    var currentIngredientDefault = SingleOrDefaultElementByKey(ingredients, elementKey);
-    var ingredientQuantity = currentIngredient.quantity;
-
-    currentIngredient.carbs.total = CalculateAmount(currentIngredientDefault, 'carbs.total', ingredientQuantity);
-    currentIngredient.carbs.sugars = CalculateAmount(currentIngredientDefault, 'carbs.sugars', ingredientQuantity);
-    currentIngredient.fats.total = CalculateAmount(currentIngredientDefault, 'fats.total', ingredientQuantity);
-    currentIngredient.fats.saturated = CalculateAmount(currentIngredientDefault, 'fats.saturated', ingredientQuantity);
-    currentIngredient.proteins = CalculateAmount(currentIngredientDefault, 'proteins', ingredientQuantity);
-    currentIngredient.fibre = CalculateAmount(currentIngredientDefault, 'fibre', ingredientQuantity);
-}
-
-function CalculateAmount(currentIngredientDefault, defaultValueName, quantity) {
-    var result;
-    if (quantity) {
-        var referenceValue = GetDescendantProp(currentIngredientDefault, defaultValueName);
-
-        result = referenceValue / 100 * quantity;
-    } else {
-        result = 0;
-    }
-
-    return result;
-}
-
-function SingleOrDefaultElementByKey(elements, key) {
-    var filteredElements = elements.filter(function (item) {
-        return item.key === key;
-    });
-
-    if (filteredElements.length > 1) {
-        throw "Duplicates keys are not allowed in the ingredientSelect array!";
-    }
-    var result = filteredElements[0];
-
-    return result;
-}
-
-function AddIngredient(scope) {
-    scope.recipeIngredients = scope.recipeIngredients || [];
-    var selectedItemKey = scope.ingredientSelect.key;
-
-    var filteredElement = SingleOrDefaultElementByKey(scope.recipeIngredients, selectedItemKey);
-
-    var isElementPresent = filteredElement;
-    var isElementNotDefault = scope.ingredientSelect.key === "default";
-
-    if (!isElementPresent && !isElementNotDefault) {
-        var selectedIngredient = scope.ingredientSelect;
-        selectedIngredient.carbs.total = 0;
-        selectedIngredient.carbs.sugars = 0;
-        selectedIngredient.fats.total = 0;
-        selectedIngredient.fats.saturated = 0;
-        selectedIngredient.proteins = 0;
-        selectedIngredient.fibre = 0;
-
-        scope.recipeIngredients.push(selectedIngredient);
-    }
-}
-
-function SumObjectsArrayProperty(items, propertyPath) {
-    var result = items.reduce(function (a, b) {
-        var element = GetDescendantProp(b, propertyPath);
-        var result = 0;
-        if (element) {
-            result = a + element;
-        }
-
-        return result;
-    }, 0);
-
-    return result;
-};
-
-function UpdateTotals($scope, recipeTotalsSvc) {
-    var recipeTotalsObj = {
-        carbsTotal: SumObjectsArrayProperty($scope.recipeIngredients, 'carbs.total'),
-        sugarsTotal: SumObjectsArrayProperty($scope.recipeIngredients, 'carbs.sugars'),
-        fatsTotal: SumObjectsArrayProperty($scope.recipeIngredients, 'fats.total'),
-        satFatsTotal: SumObjectsArrayProperty($scope.recipeIngredients, 'fats.saturated'),
-        fibreTotal: SumObjectsArrayProperty($scope.recipeIngredients, 'fibre'),
-        proteinsTotal: SumObjectsArrayProperty($scope.recipeIngredients, 'proteins')
-    };
-
-    recipeTotalsSvc.set(recipeTotalsObj);
-}
-
-function GetDescendantProp(obj, propertyPath) {
-    var arr = propertyPath.split(".");
-    while (arr.length && (obj = obj[arr.shift()]));
-    return obj;
-}
 
 
 

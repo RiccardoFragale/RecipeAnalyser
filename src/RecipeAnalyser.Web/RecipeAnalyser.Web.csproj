@@ -98,6 +98,8 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Views\Index\IngredientCtrl.js" />
+    <Content Include="Views\Index\RecipeCtrl.js" />
     <Content Include="Views\Index\Main.css" />
     <Content Include="Views\Index\Main.html" />
     <Content Include="Views\Index\Main.js" />
