@@ -48,47 +48,42 @@
                 </div>
 
                 <!--Recipe details-->
-                <div class="panel">
-                    <div ng-repeat="ingredient in recipeIngredients">
-                        <div ng-controller="IngredientCtrl">
-                            <div class="row">
-                                <div class="col-md-3">
-                                    <label>{{ingredient.value}}</label>
-                                </div>
-                                <div class="col-md-2">
-                                    <span class="info">Qty:</span>
-                                    <input class="form-control" ng-model="ingredient.quantity" dir-enter="calculateAmount(ingredient)" />
-                                </div>
-                                <div class="col-md-7">
-                                    <div class="row">
-                                        <div class="col-md-3">
-                                            <span class="text-info">Fats:</span>
-                                            <p>{{ingredient.fats.total | number:2}}</p>
-                                        </div>
-                                        <div class="col-md-3">
-                                            <span class="text-info">Carbs:</span>
-                                            <p>{{ingredient.carbs.total | number:2}}</p>
-                                        </div>
-                                        <div class="col-md-3">
-                                            <span class="text-info">Proteins:</span>
-                                            <p>{{ingredient.proteins | number:2}}</p>
-                                        </div>
-                                        <div class="col-md-3">
-                                            <span class="text-info">Fibre:</span>
-                                            <p>{{ingredient.fibre | number:2}}</p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                <table class="table">
+                    <tr ng-repeat="ingredient in recipeIngredients" ng-controller="IngredientCtrl">
+                        <td>
+                            <label>{{ingredient.value}}</label>
+                        </td>
+                        <td class="">
+                            <span class="info">Qty:</span>
+                            <input class="form-control" ng-model="ingredient.quantity" dir-enter="calculateAmount(ingredient)"/>
+                        </td>
+                        <td>
+                            <span class="text-info">Fats:</span>
+                            <p>{{ingredient.fats.total | number:2}}</p>
+                        </td>
+                        <td>
+                            <span class="text-info">Carbs:</span>
+                            <p>{{ingredient.carbs.total | number:2}}</p>
+                        </td>
+                        <td>
+                            <span class="text-info">Proteins:</span>
+                            <p>{{ingredient.proteins | number:2}}</p>
+                        </td>
+                        <td>
+                            <span class="text-info">Fibre:</span>
+                            <p>{{ingredient.fibre | number:2}}</p>
+                        </td>
+                        <td>
+                            <input type="button" value="X" class="btn btn-xs btn-danger" ng-click="remove(ingredient)"/>
+                        </td>
+                    </tr>
+                </table>
 
                 <!--Totals-->
                 <table class="table">
                     <tr class="form-group">
                         <td>
-                            <label class="control-label">Total weight:</label>
+                            <label class="control-label pull-right">Total weight:</label>
                         </td>
                         <td>
                             <label class="form-control">{{recipeTotals.recipeTotal | number:2}}</label>
@@ -96,7 +91,7 @@
                     </tr>
                     <tr class="form-group">
                         <td>
-                            <label class="control-label">Carbs:</label>
+                            <label class="control-label pull-right">Carbs:</label>
                         </td>
                         <td>
                             <label class="form-control">{{recipeTotals.carbsTotal | number:2}}</label>
@@ -105,7 +100,7 @@
                             <label class="form-control">{{recipeTotals.carbsPercentage | percentage:0}}</label>
                         </td>
                         <td>
-                            <label class="control-label">of which sugars:</label>
+                            <label class="control-label pull-right">of which sugars:</label>
                         </td>
                         <td>
                             <label class="form-control">{{recipeTotals.sugarsTotal | number:2}}</label>
@@ -113,7 +108,7 @@
                     </tr>
                     <tr class="form-group">
                         <td>
-                            <label class="control-label">Fats:</label>
+                            <label class="control-label pull-right">Fats:</label>
                         </td>
                         <td>
                             <label class="form-control">{{recipeTotals.fatsTotal | number:2}}</label>
@@ -122,7 +117,7 @@
                             <label class="form-control">{{recipeTotals.fatsPercentage | percentage:0}}</label>
                         </td>
                         <td>
-                            <label class="control-label">of which saturated:</label>
+                            <label class="control-label pull-right">of which saturated:</label>
                         </td>
                         <td>
                             <label class="form-control">{{recipeTotals.satFatsTotal | number:2}}</label>
@@ -130,7 +125,7 @@
                     </tr>
                     <tr class="form-group">
                         <td>
-                            <label class="control-label">Proteins:</label>
+                            <label class="control-label pull-right">Proteins:</label>
                         </td>
                         <td>
                             <label class="form-control">{{recipeTotals.proteinsTotal | number:2}}</label>
@@ -141,7 +136,7 @@
                     </tr>
                     <tr class="form-group">
                         <td>
-                            <label class="control-label">Fibres:</label>
+                            <label class="control-label pull-right">Fibres:</label>
                         </td>
                         <td>
                             <label class="form-control">{{recipeTotals.fibreTotal | number:2}}</label>

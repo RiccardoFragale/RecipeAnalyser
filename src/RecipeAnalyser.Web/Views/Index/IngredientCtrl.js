@@ -10,6 +10,11 @@ function IngredientCtrl($scope, recipeTotalsSvc) {
         //SaveRecipeToFile($scope.ingredients);
     };
 
+    $scope.remove = function (currentIngredient) {
+        RemoveIngredient($scope, currentIngredient);
+        UpdateTotals($scope, recipeTotalsSvc);
+    };
+
     $scope.quantity = 0;
 }
 
@@ -39,10 +44,6 @@ function CalculateAmounts(ingredients, currentIngredient) {
     currentIngredient.fats.saturated = CalculateAmount(currentIngredientDefault, 'fats.saturated', ingredientQuantity);
     currentIngredient.proteins = CalculateAmount(currentIngredientDefault, 'proteins', ingredientQuantity);
     currentIngredient.fibre = CalculateAmount(currentIngredientDefault, 'fibre', ingredientQuantity);
-    //currentIngredient.total = currentIngredient.carbs.total +
-    //    currentIngredient.fats.total +
-    //    currentIngredient.proteins +
-    //    currentIngredient.fibre;
 }
 
 function CalculateAmount(currentIngredientDefault, defaultValueName, quantity) {
@@ -73,15 +74,16 @@ function SumObjectsArrayProperty(items, propertyPath) {
     return result;
 };
 
-function UpdateTotals($scope, recipeTotalsSvc) {
+function UpdateTotals(scope, recipeTotalsSvc) {
+    var recipeIngredients = scope.recipeIngredients;
     var recipeTotalsObj = {
-        carbsTotal: SumObjectsArrayProperty($scope.recipeIngredients, 'carbs.total'),
-        sugarsTotal: SumObjectsArrayProperty($scope.recipeIngredients, 'carbs.sugars'),
-        fatsTotal: SumObjectsArrayProperty($scope.recipeIngredients, 'fats.total'),
-        satFatsTotal: SumObjectsArrayProperty($scope.recipeIngredients, 'fats.saturated'),
-        fibreTotal: SumObjectsArrayProperty($scope.recipeIngredients, 'fibre'),
-        proteinsTotal: SumObjectsArrayProperty($scope.recipeIngredients, 'proteins'),
-        recipeTotal: SumObjectsArrayProperty($scope.recipeIngredients, 'quantity')
+        carbsTotal: SumObjectsArrayProperty(recipeIngredients, 'carbs.total'),
+        sugarsTotal: SumObjectsArrayProperty(recipeIngredients, 'carbs.sugars'),
+        fatsTotal: SumObjectsArrayProperty(recipeIngredients, 'fats.total'),
+        satFatsTotal: SumObjectsArrayProperty(recipeIngredients, 'fats.saturated'),
+        fibreTotal: SumObjectsArrayProperty(recipeIngredients, 'fibre'),
+        proteinsTotal: SumObjectsArrayProperty(recipeIngredients, 'proteins'),
+        recipeTotal: SumObjectsArrayProperty(recipeIngredients, 'quantity')
     };
 
     recipeTotalsObj.carbsPercentage = recipeTotalsObj.carbsTotal / recipeTotalsObj.recipeTotal * 100;
@@ -96,6 +98,15 @@ function GetDescendantProp(obj, propertyPath) {
     var arr = propertyPath.split(".");
     while (arr.length && (obj = obj[arr.shift()]));
     return obj;
+}
+
+function RemoveIngredient(scope, currentIngredient) {
+    var elementKey = currentIngredient.key;
+    var recipeIngredients = scope.recipeIngredients;
+
+    var elementIndex = recipeIngredients.map(function (e) { return e.key; }).indexOf(elementKey);
+    recipeIngredients.splice(elementIndex, 1);
+
 }
 
 
