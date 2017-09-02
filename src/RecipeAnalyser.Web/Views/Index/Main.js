@@ -56,6 +56,16 @@ app.service('recipeTotalsSvc', function () {
     }
 });
 
+app.filter('percentage', ['$filter', function ($filter) {
+    return function (input, decimals) {
+        var result;
+        if (input) {
+            result = $filter('number')(input, decimals) + '%';
+        }
+        return result;
+    };
+}]);
+
 
 
 

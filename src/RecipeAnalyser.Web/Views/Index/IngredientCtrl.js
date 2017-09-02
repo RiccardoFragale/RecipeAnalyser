@@ -7,7 +7,7 @@ function IngredientCtrl($scope, recipeTotalsSvc) {
         var ingredients = $scope.ingredients;
         CalculateAmounts(ingredients, ingredient);
         UpdateTotals($scope, recipeTotalsSvc);
-        SaveRecipeToFile($scope.ingredients);
+        //SaveRecipeToFile($scope.ingredients);
     };
 
     $scope.quantity = 0;
@@ -39,6 +39,10 @@ function CalculateAmounts(ingredients, currentIngredient) {
     currentIngredient.fats.saturated = CalculateAmount(currentIngredientDefault, 'fats.saturated', ingredientQuantity);
     currentIngredient.proteins = CalculateAmount(currentIngredientDefault, 'proteins', ingredientQuantity);
     currentIngredient.fibre = CalculateAmount(currentIngredientDefault, 'fibre', ingredientQuantity);
+    //currentIngredient.total = currentIngredient.carbs.total +
+    //    currentIngredient.fats.total +
+    //    currentIngredient.proteins +
+    //    currentIngredient.fibre;
 }
 
 function CalculateAmount(currentIngredientDefault, defaultValueName, quantity) {
@@ -56,7 +60,8 @@ function CalculateAmount(currentIngredientDefault, defaultValueName, quantity) {
 
 function SumObjectsArrayProperty(items, propertyPath) {
     var result = items.reduce(function (a, b) {
-        var element = GetDescendantProp(b, propertyPath);
+        var targetPropertyValue = GetDescendantProp(b, propertyPath);
+        var element = parseFloat(targetPropertyValue);
         var result = 0;
         if (element) {
             result = a + element;
@@ -75,8 +80,14 @@ function UpdateTotals($scope, recipeTotalsSvc) {
         fatsTotal: SumObjectsArrayProperty($scope.recipeIngredients, 'fats.total'),
         satFatsTotal: SumObjectsArrayProperty($scope.recipeIngredients, 'fats.saturated'),
         fibreTotal: SumObjectsArrayProperty($scope.recipeIngredients, 'fibre'),
-        proteinsTotal: SumObjectsArrayProperty($scope.recipeIngredients, 'proteins')
+        proteinsTotal: SumObjectsArrayProperty($scope.recipeIngredients, 'proteins'),
+        recipeTotal: SumObjectsArrayProperty($scope.recipeIngredients, 'quantity')
     };
+
+    recipeTotalsObj.carbsPercentage = recipeTotalsObj.carbsTotal / recipeTotalsObj.recipeTotal * 100;
+    recipeTotalsObj.fatsPercentage = recipeTotalsObj.fatsTotal / recipeTotalsObj.recipeTotal * 100;
+    recipeTotalsObj.proteinsPercentage = recipeTotalsObj.proteinsTotal / recipeTotalsObj.recipeTotal * 100;
+    recipeTotalsObj.fibrePercentage = recipeTotalsObj.fibreTotal / recipeTotalsObj.recipeTotal * 100;
 
     recipeTotalsSvc.set(recipeTotalsObj);
 }
