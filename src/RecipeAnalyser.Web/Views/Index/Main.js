@@ -45,7 +45,8 @@ app.service('recipeTotalsSvc', function () {
         fatsTotal: 0,
         satFatsTotal: 0,
         fibreTotal: 0,
-        proteinsTotal: 0
+        proteinsTotal: 0,
+        saltTotal: 0
     };
 
     return {

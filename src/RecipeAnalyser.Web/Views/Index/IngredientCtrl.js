@@ -44,6 +44,7 @@ function CalculateAmounts(ingredients, currentIngredient) {
     currentIngredient.fats.saturated = CalculateAmount(currentIngredientDefault, 'fats.saturated', ingredientQuantity);
     currentIngredient.proteins = CalculateAmount(currentIngredientDefault, 'proteins', ingredientQuantity);
     currentIngredient.fibre = CalculateAmount(currentIngredientDefault, 'fibre', ingredientQuantity);
+    currentIngredient.salt = CalculateAmount(currentIngredientDefault, 'salt', ingredientQuantity);
 }
 
 function CalculateAmount(currentIngredientDefault, defaultValueName, quantity) {
@@ -81,13 +82,17 @@ function UpdateTotals(scope, recipeTotalsSvc) {
         satFatsTotal: SumObjectsArrayProperty(recipeIngredients, 'fats.saturated'),
         fibreTotal: SumObjectsArrayProperty(recipeIngredients, 'fibre'),
         proteinsTotal: SumObjectsArrayProperty(recipeIngredients, 'proteins'),
+        saltTotal: SumObjectsArrayProperty(recipeIngredients, 'salt'),
         recipeTotal: SumObjectsArrayProperty(recipeIngredients, 'quantity')
     };
 
     recipeTotalsObj.carbsPercentage = recipeTotalsObj.carbsTotal / recipeTotalsObj.recipeTotal * 100;
+    recipeTotalsObj.sugarsPercentage = recipeTotalsObj.sugarsTotal / recipeTotalsObj.recipeTotal * 100;
     recipeTotalsObj.fatsPercentage = recipeTotalsObj.fatsTotal / recipeTotalsObj.recipeTotal * 100;
+    recipeTotalsObj.satFatsPercentage = recipeTotalsObj.satFatsTotal / recipeTotalsObj.recipeTotal * 100;
     recipeTotalsObj.proteinsPercentage = recipeTotalsObj.proteinsTotal / recipeTotalsObj.recipeTotal * 100;
     recipeTotalsObj.fibrePercentage = recipeTotalsObj.fibreTotal / recipeTotalsObj.recipeTotal * 100;
+    recipeTotalsObj.saltPercentage = recipeTotalsObj.saltTotal / recipeTotalsObj.recipeTotal * 100;
 
     recipeTotalsSvc.set(recipeTotalsObj);
 }

@@ -78,7 +78,11 @@
                             <p>{{ingredient.fibre | number:2}}</p>
                         </td>
                         <td>
-                            <input type="button" value="X" class="btn btn-xs btn-danger hidden-print" ng-click="remove(ingredient)" />
+                            <span class="text-info">Salt:</span>
+                            <p>{{ingredient.salt | number:2}}</p>
+                        </td>
+                        <td>
+                            <input type="button" value="x" class="btn btn-xs btn-danger hidden-print" ng-click="remove(ingredient)" />
                         </td>
                     </tr>
                 </table>
@@ -109,6 +113,9 @@
                         <td>
                             <label class="form-control">{{recipeTotals.sugarsTotal | number:2}}</label>
                         </td>
+                        <td>
+                            <label class="form-control">{{recipeTotals.sugarsPercentage | percentage:0}}</label>
+                        </td>
                     </tr>
                     <tr class="form-group">
                         <td>
@@ -125,6 +132,9 @@
                         </td>
                         <td>
                             <label class="form-control">{{recipeTotals.satFatsTotal | number:2}}</label>
+                        </td>
+                        <td>
+                            <label class="form-control">{{recipeTotals.satFatsPercentage | percentage:0}}</label>
                         </td>
                     </tr>
                     <tr class="form-group">
@@ -147,6 +157,17 @@
                         </td>
                         <td>
                             <label class="form-control">{{recipeTotals.fibrePercentage | percentage:0}}</label>
+                        </td>
+                    </tr>
+                    <tr class="form-group">
+                        <td>
+                            <label class="control-label pull-right">Salt:</label>
+                        </td>
+                        <td>
+                            <label class="form-control">{{recipeTotals.saltTotal | number:2}}</label>
+                        </td>
+                        <td>
+                            <label class="form-control">{{recipeTotals.saltPercentage | percentage:0}}</label>
                         </td>
                     </tr>
                 </table>

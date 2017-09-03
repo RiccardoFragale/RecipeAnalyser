@@ -47,6 +47,7 @@ function AddIngredient(scope) {
         selectedIngredient.fats.saturated = 0;
         selectedIngredient.proteins = 0;
         selectedIngredient.fibre = 0;
+        selectedIngredient.salt = 0;
 
         scope.recipeIngredients.push(selectedIngredient);
     }
