@@ -63,10 +63,8 @@ function SumObjectsArrayProperty(items, propertyPath) {
     var result = items.reduce(function (a, b) {
         var targetPropertyValue = GetDescendantProp(b, propertyPath);
         var element = parseFloat(targetPropertyValue);
-        var result = 0;
-        if (element) {
-            result = a + element;
-        }
+
+        var result = a + element;
 
         return result;
     }, 0);
