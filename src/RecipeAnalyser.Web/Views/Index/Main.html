@@ -37,8 +37,12 @@
         <div class="col-md-6">
             <div ng-controller="RecipeCtrl">
 
+                <div class="form-group form-group-sm">
+                    <input type="text" class="form-control" name="RecipeTitle" />
+                </div>
+
                 <!--Ingredients selection-->
-                <div class="row form-group">
+                <div class="row form-group hidden-print">
                     <div class="col-md-8 form-group">
                         <select id="ingredientSelect" class="form-control" ng-model="ingredientSelect" ng-options="ingredient.value for ingredient in ingredients track by ingredient.key"></select>
                     </div>
@@ -55,7 +59,7 @@
                         </td>
                         <td class="">
                             <span class="info">Qty:</span>
-                            <input class="form-control" ng-model="ingredient.quantity" dir-enter="calculateAmount(ingredient)"/>
+                            <input class="form-control" ng-model="ingredient.quantity" dir-enter="calculateAmount(ingredient)" />
                         </td>
                         <td>
                             <span class="text-info">Fats:</span>
@@ -74,7 +78,7 @@
                             <p>{{ingredient.fibre | number:2}}</p>
                         </td>
                         <td>
-                            <input type="button" value="X" class="btn btn-xs btn-danger" ng-click="remove(ingredient)"/>
+                            <input type="button" value="X" class="btn btn-xs btn-danger hidden-print" ng-click="remove(ingredient)" />
                         </td>
                     </tr>
                 </table>
