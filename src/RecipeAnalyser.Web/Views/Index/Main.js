@@ -34,7 +34,11 @@ app.service('ingredientsSvc', function () {
         { key: "parmigianoReggiano", value: "Parmigiano Reggiano cheese", fats: { total: 28.4, saturated: 18.7 }, carbs: { total: 0.25, sugars: 0.25 }, proteins: 33, fibre: 0.25, salt: 1.63 },
         { key: "tomatoPassata", value: "Tomato passata", fats: { total: 0.25, saturated: 0.1 }, carbs: { total: 6, sugars: 4.7 }, proteins: 1.1, fibre: 0.8, salt: 0.43 },
         { key: "cocoaPowder", value: "Cocoa powder", fats: { total: 21.5, saturated: 15.5 }, carbs: { total: 14, sugars: 2 }, proteins: 23, fibre: 33.5, salt: 1.4 },
-        { key: "sugarFreeChocolate", value: "Sugar free chocolate", fats: { total: 42.2, saturated: 26.9 }, carbs: { total: 34.3, sugars: 1.2 }, proteins: 8.2, fibre: 11, salt: 0.03 }
+        { key: "sugarFreeChocolate", value: "Sugar free chocolate", fats: { total: 42.2, saturated: 26.9 }, carbs: { total: 34.3, sugars: 1.2 }, proteins: 8.2, fibre: 11, salt: 0.03 },
+        { key: "ricotta", value: "Ricotta", fats: { total: 10.1, saturated: 6.3 }, carbs: { total: 3.5, sugars: 3.2 }, proteins: 7, fibre: 0, salt: 0.41 },
+        { key: "doubleCream", value: "Double cream", fats: { total: 47.5, saturated: 29.7 }, carbs: { total: 2.6, sugars: 2.6 }, proteins: 1.7, fibre: 0, salt: 0.01 },
+        { key: "digestiveBiscuits", value: "Digestive biscuits", fats: { total: 18.3, saturated: 8.6 }, carbs: { total: 66.9, sugars: 18.9 }, proteins: 7.1, fibre: 3.8, salt: 1.03 },
+        { key: "digestiveBiscuitsDark", value: "Digestive biscuits dark chocolate", fats: { total: 23.3, saturated: 11.8 }, carbs: { total: 63.9, sugars: 24.1 }, proteins: 6.7, fibre: 3.4, salt: 0.78 }
     ];
 });
 
